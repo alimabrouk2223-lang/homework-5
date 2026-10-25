@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mega Goal 2 – Homework 5</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f6f7fb;--card:#fff;--tx:#1d2433;--mu:#64708a;--ac:#0b6b4f;--bd:#dde2ee;--ok:#d9f3e6;--okb:#1a9a68;--no:#fde3e3;--nob:#d44;}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161f;--card:#1b2130;--tx:#eef1f8;--mu:#9aa5bf;--ac:#3fcf9b;--bd:#2c3550;--ok:#12382b;--okb:#3fcf9b;--no:#3d1c1f;--nob:#ff7b7b;}}
+:root[data-theme="dark"]{--bg:#12161f;--card:#1b2130;--tx:#eef1f8;--mu:#9aa5bf;--ac:#3fcf9b;--bd:#2c3550;--ok:#12382b;--okb:#3fcf9b;--no:#3d1c1f;--nob:#ff7b7b;}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:680px;margin:0 auto;padding:16px}
+h1{font-size:22px;margin:0 0 4px}.sub{color:var(--mu);margin:0 0 14px;font-size:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin-bottom:14px}
+input[type=text]{width:100%;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font-size:16px}
+.q{font-weight:600;margin:0 0 10px}.n{color:var(--ac)}
+.o{display:block;width:100%;text-align:left;padding:11px 12px;margin:6px 0;border:1.5px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font-size:16px;cursor:pointer}
+.o:disabled{cursor:default}
+.o.ok{background:var(--ok);border-color:var(--okb)}.o.no{background:var(--no);border-color:var(--nob)}
+.bar{height:8px;background:var(--bd);border-radius:6px;overflow:hidden;margin-bottom:14px}
+.bar i{display:block;height:100%;width:0;background:var(--ac);transition:width .3s}
+button.p{background:var(--ac);color:var(--bg);border:0;border-radius:10px;padding:12px 18px;font-size:16px;font-weight:600;cursor:pointer}
+.res{text-align:center}.big{font-size:42px;font-weight:700;color:var(--ac)}
+.qr{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+#qr{background:#fff;padding:8px;border-radius:8px;min-width:96px;min-height:96px}
+.small{font-size:13px;color:var(--mu)}
+@media print{.noprint{display:none}}
+</style>
+</head>
+<body>
+<div class="w">
+<h1>Homework (5) – Mega Goal 2</h1>
+<p class="sub">Second Year Secondary · First Term 1448 · Choose the correct word</p>
+
+<div class="card noprint">
+<div class="qr">
+<div id="qr"></div>
+<div style="flex:1;min-width:180px"><b>Scan to open the questions · امسح الباركود للدخول إلى الأسئلة</b>
+<p class="small" style="margin:4px 0 8px">الصق رابط هذا الملف بعد رفعه على الإنترنت ثم اضغط Enter، وسيظهر الباركود.<br>Paste the web address where this file is hosted, then press Enter.</p>
+<input type="text" id="url" aria-label="Assignment link" placeholder="https://..."></div>
+</div>
+</div>
+
+<div class="card"><label for="nm" class="small">Name</label><input type="text" id="nm" placeholder="Type your name"></div>
+<div class="bar"><i id="pb"></i></div>
+<div id="qs"></div>
+<div id="out"></div>
+</div>
+<script>
+var Q=[
+["They ………… their friends at the mall last week.",["meet","meeting","met","meets"],2],
+["Did you ………… to travel a lot when you were young?",["uses","using","used","use"],3],
+["What were you ………… when the telephone rang?",["do","doing","done","did"],1],
+["I was working on my computer when the power …………",["went out","go out","going out","goes out"],0],
+["I ………… for two hours before my father arrived.",["had read","had been reading","reading","have read"],1],
+["After I …………, I watched TV.",["had studied","study","studies","studying"],0]
+];
+var L="abcd",done=0,score=0,box=document.getElementById("qs");
+Q.forEach(function(q,i){
+var c=document.createElement("div");c.className="card";
+var h='<p class="q"><span class="n">'+(i+1)+'.</span> '+q[0]+'</p>';
+q[1].forEach(function(t,j){h+='<button class="o" data-i="'+i+'" data-j="'+j+'">'+L[j]+') '+t+'</button>'});
+c.innerHTML=h;box.appendChild(c);
+});
+box.addEventListener("click",function(e){
+var b=e.target.closest(".o");if(!b||b.disabled)return;
+var i=+b.dataset.i,j=+b.dataset.j,ok=Q[i][2],bs=b.parentNode.querySelectorAll(".o");
+bs.forEach(function(x){x.disabled=true});
+bs[ok].classList.add("ok");
+if(j===ok)score++;else b.classList.add("no");
+done++;document.getElementById("pb").style.width=(done/Q.length*100)+"%";
+if(done===Q.length)finish();
+});
+function finish(){
+var n=document.getElementById("nm").value.trim()||"Student";
+var o=document.getElementById("out");
+o.innerHTML='<div class="card res"><div class="small">'+n.replace(/</g,"&lt;")+'</div><div class="big">'+score+' / '+Q.length+'</div><p>'+(score===Q.length?"Excellent work!":score>=4?"Good job! Review the red answers.":"Keep practicing – review the grammar and try again.")+'</p><button class="p noprint" onclick="location.reload()">Try again</button> <button class="p noprint" onclick="window.print()">Print result</button></div>';
+o.scrollIntoView({behavior:"smooth"});
+}
+var u=document.getElementById("url"),qe=document.getElementById("qr"),qr=null;
+function draw(){
+var v=u.value.trim();if(!v){qe.textContent="—";return}
+try{qe.innerHTML="";qr=new QRCode(qe,{text:v,width:240,height:240})}catch(x){qe.textContent="QR unavailable"}
+}
+try{var sv=localStorage.getItem("hw5url");if(sv)u.value=sv;else if(/^https?:/.test(location.href))u.value=location.href}catch(x){if(/^https?:/.test(location.href))u.value=location.href}
+u.addEventListener("change",function(){try{localStorage.setItem("hw5url",u.value.trim())}catch(x){}draw()});draw();
+</script>
+</body>
+</html>
